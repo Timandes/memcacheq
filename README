@@ -1,42 +1,54 @@
 ===============================================
-MemcacheQ - Simple Queue Service over Memcache
+MemcacheQ - Simple Queue Service over Memcache（基于Memcache协议的简单队列服务）
 ===============================================
 
-Features
+Features（特性）
 =========
 * damn simple
+* 十分简单
 * very fast
+* 非常快
 * multiple queue
+* 多队列
 * concurrent well
+* 并行处理
 * memcache protocol compatible
+* 兼容memcache协议
 
-Getting Started
+Getting Started（开始上手）
 ===============
 
-Download
+Download（下载）
 ---------
 See: <http://code.google.com/p/memcacheq/downloads/list>
+参看: <http://code.google.com/p/memcacheq/downloads/list>
 
-Installation
+Installation（安装方法）
 -------------
 See: <http://memcachedb.org/memcacheq/INSTALL.html>
+参看: <http://memcachedb.org/memcacheq/INSTALL.html>
 
-Please take a look at 'ChangLog' file in the distribution, see what's new.
+Please take a look at 'ChangeLog' file in the distribution, see what's new.
+请查看发行包中的ChangeLog以确认新增加的特性。
 
-Commands
+Commands（使用方法）
 ---------
 
 Only two commands are used to operate the queue:
+只需要两种命令就可以操作队列:
 
 **Append a message to the tail of queue**::
+**将队列项插入队尾**::
 
    set <queue name> <flags> 0 <message_len>\r\n
    <put your message body here>\r\n
    STORED\r\n
 
 **Note:** MQ will create a new queue automatically if your queue is not existed. The original 'expire time' field is ignored by server.
+**注意:** 如果队列不存在，MQ会自动创建一个。命令中的'expire time'字段默认被服务器忽略。
 
 **Consume a message from the head of queue**::
+**从队首取出一个队列项**::
 
    get <queue name>\r\n
    VALUE <queue name> <flags> <message_len>\r\n
@@ -44,10 +56,11 @@ Only two commands are used to operate the queue:
    END\r\n
 
    
-Examples
+Examples（示例）
 ---------
 
 Assuming you are using PHP memcache<http://www.php.net/memcache>::
+假设你使用的是PHP memcache扩展<http://www.php.net/memcache>::
 
   <?php
   /* connect to memcached server */
@@ -62,21 +75,25 @@ Assuming you are using PHP memcache<http://www.php.net/memcache>::
   memcache_close($memcache_obj);
   ?>
   
-Limitation
+Limitation（局限性）
 ===========
 The message body is stored in Berkeley DB with fixed length. Any message that is shorter than the declared length will automatically be padded with space character (0x20 in the ASCII character set). 
+队列项在Berkeley DB中是用固定长度存储的，任何短于预定长度的队列项都会被用空格填充（对应于ASCII表中的0x20）。
 
 In Berkeley DB, as the official document refers,
+在Berkeley DB官方文档中提及到：
 
 "For the Queue access method, the record length must be enough smaller than the database's page size that at least one record plus the database page's metadata information can fit on each database page."
 
 "The minimum page size is 512 bytes, the maximum page size is 64K bytes, and the page size must be a power-of-two."
 
 So we have a limit on the message body size with a max of a bit less than *64K*.
+因此，我们规定队列项的字节数上限是略小于*64K*的某个值。
 
-Other tips
+Other tips（其他细节）
 ===========
 use 'stats queue' to see your current queues::
+使用'stats queue'命令观察队列状态::
 
   $ telnet 127.0.0.1 22201
   Trying 127.0.0.1...
@@ -90,6 +107,7 @@ use 'stats queue' to see your current queues::
   END
   
 delete a queue::
+删除队列::
 
   $ telnet 127.0.0.1 22201
   Trying 127.0.0.1...
@@ -99,14 +117,21 @@ delete a queue::
   DELETED
   
   
-Feedback
+Feedback（反馈）
 =========
 MemcacheDB mailing list now hosts on Google Group: http://groups.google.com/group/memcachedb
+使用MemcacheDB在Google Group上的邮件列表: http://groups.google.com/group/memcachedb
 
 * To subscribe to maillist, send email to memcachedb-subscribe@googlegroups.com
+* 发送Email至memcachedb-subscribe@googlegroups.com订阅邮件列表
 * To post to maillist, send email to memcachedb@googlegroups.com
+* 发送Email至memcachedb@googlegroups.com参与讨论
 * To unsubscribe from maillist, send email to memcachedb-unsubscribe@googlegroups.com
+* 发送Email至memcachedb-unsubscribe@googlegroups.com取消订阅
 
 Please report your bugs and issues to the Maillist.
+请通过邮件列表反馈Bug，提出建议。
 
 Last updated by Steve Chu<http://stvchu.org>: 12/09/2009
+由Steve Chu<http://stvchu.org>于2009年12月9日最后一次更新
+由Timandes<timands@gmail.com>于2013年9月10日最后一次翻译

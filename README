@@ -84,8 +84,10 @@ In Berkeley DB, as the official document refers,
 在Berkeley DB官方文档中提及到：
 
 "For the Queue access method, the record length must be enough smaller than the database's page size that at least one record plus the database page's metadata information can fit on each database page."
+“使用Queue方式存取数据时，每一条记录的长度必须要小于数据库的页大小，以便该条记录和页的元信息能够完整的放在一个页中。”
 
 "The minimum page size is 512 bytes, the maximum page size is 64K bytes, and the page size must be a power-of-two."
+“页大小最小值是512字节，最大值是64KB，必须是2的整数次幂。”
 
 So we have a limit on the message body size with a max of a bit less than *64K*.
 因此，我们规定队列项的字节数上限是略小于*64K*的某个值。

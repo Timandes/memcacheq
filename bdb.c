@@ -360,6 +360,7 @@ static void dump_qstats_to_db(void) {
     /* qstats hashtable */
     char *kk;
     qstats_t *s;
+    int64_t set_hits,get_hits;
     struct hashtable *qstats_htp = NULL;    
     qstats_htp = create_hashtable(64, hashfromkey, equalkeys);
     assert(qstats_htp != NULL);
@@ -383,15 +384,15 @@ static void dump_qstats_to_db(void) {
                 pthread_mutex_unlock(&(q->lock));
                 continue;
             }
-            q->old_set_hits = q->set_hits;
-            q->old_get_hits = q->get_hits;
+            set_hits = q->old_set_hits = q->set_hits;
+            get_hits = q->old_get_hits = q->get_hits;
             pthread_mutex_unlock(&(q->lock));
             kk = strdup(k);
             assert(kk);
             s = calloc(1, sizeof(qstats_t));
             assert(s);
-            s->set_hits = q->old_set_hits;
-            s->get_hits = q->old_get_hits;
+            s->set_hits = set_hits;
+            s->get_hits = get_hits;
             result = hashtable_insert(qstats_htp, (void *)kk, (void *)s);
             assert(result != 0);
         } while (hashtable_iterator_advance(itr));
